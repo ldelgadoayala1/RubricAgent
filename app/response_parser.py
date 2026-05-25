@@ -23,6 +23,13 @@ def normalize_response(response: dict) -> dict:
             or "Básico"
         )
 
+        feedback = (
+            item.get("feedback")
+            or item.get("comment")
+            or item.get("observation")
+            or "Sin observaciones."
+        )
+
         normalized_item = {
 
             "criterion_id":
@@ -44,15 +51,47 @@ def normalize_response(response: dict) -> dict:
                 ),
 
             "feedback":
-                item.get(
-                    "feedback",
-                    ""
-                )
+                feedback
         }
 
         normalized_results.append(
             normalized_item
         )
+
+    feedback_lines = []
+
+    for item in normalized_results:
+
+        feedback = item.get(
+            "feedback",
+            ""
+        ).strip()
+
+        if feedback:
+
+            feedback_lines.append(
+                f"{feedback}"
+            )
+
+    llm_general_feedback = response.get(
+        "general_feedback",
+        ""
+    ).strip()
+
+    if llm_general_feedback:
+
+        feedback_lines.append("")
+        feedback_lines.append(
+            "Conclusión general:"
+        )
+
+        feedback_lines.append(
+            llm_general_feedback
+        )
+
+    final_general_feedback = " ".join(
+        feedback_lines
+    )
 
     normalized_response = {
 
@@ -72,10 +111,7 @@ def normalize_response(response: dict) -> dict:
             ),
 
         "general_feedback":
-            response.get(
-                "general_feedback",
-                ""
-            )
+            final_general_feedback
     }
 
     return normalized_response

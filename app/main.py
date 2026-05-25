@@ -1,4 +1,5 @@
 from pathlib import Path
+from app.rubric_manager import get_available_rubrics
 
 from fastapi import (
     FastAPI,
@@ -32,6 +33,13 @@ def root():
     }
 
 
+@app.get("/rubrics")
+def list_rubrics():
+
+    return {
+        "rubrics": get_available_rubrics()
+    }
+
 @app.post(
     "/evaluate",
     response_model=EvaluationResponse
@@ -39,7 +47,7 @@ def root():
 async def evaluate_code(
     student_name: str = Form(...),
     file: UploadFile = File(...),
-    rubric_name: str = Form(DEFAULT_RUBRIC)
+    rubric_name: str = Form(...)
 ):
 
     try:

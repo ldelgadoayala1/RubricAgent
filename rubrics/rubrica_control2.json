@@ -1,5 +1,13 @@
 {
-  "rubric_name": "Python Básico",
+  "rubric_name": "Control 2 Python",
+
+  "language": "python",
+
+  "allowed_extensions": [
+    ".py",
+    ".ipynb"
+  ],
+  
   "total_points": 100,
   "criteria": [
     {

@@ -2,12 +2,10 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-RUBRICS_DIR = BASE_DIR / "rubrics"
 UPLOADS_DIR = BASE_DIR / "uploads"
-RESULTS_DIR = BASE_DIR / "results"
 
-DEFAULT_RUBRIC = "python_basico.json"
+RUBRICS_DIR = BASE_DIR / "rubrics"
 
-OPENAI_MODEL = "gpt-4.1-mini"
+DEFAULT_RUBRIC = "default_rubric.json"
 
 MAX_FILE_SIZE_MB = 10
