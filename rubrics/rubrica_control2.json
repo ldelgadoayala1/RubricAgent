@@ -1,0 +1,144 @@
+{
+  "rubric_name": "Python Básico",
+  "total_points": 100,
+  "criteria": [
+    {
+      "id": 1,
+      "name": "Uso de operadores",
+      "description": "Uso de operadores aritméticos, de comparación y lógicos.",
+      "levels": {
+        "Destacado": {
+          "points": 15,
+          "description": "Aplica correctamente todos los operadores en expresiones complejas, combinándolos de forma eficiente y sin errores."
+        },
+        "Bueno": {
+          "points": 10,
+          "description": "Aplica correctamente los operadores en la mayoría de los casos, con errores menores en combinaciones."
+        },
+        "Básico": {
+          "points": 5,
+          "description": "Utiliza operadores básicos, pero con limitaciones o errores en expresiones más complejas."
+        },
+        "Insuficiente": {
+          "points": 1,
+          "description": "Presenta errores frecuentes en el uso de operadores o no logra aplicarlos correctamente."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "name": "Control de flujo",
+      "description": "Uso de IF, ELIF, ELSE, WHILE y ciclos anidados.",
+      "levels": {
+        "Destacado": {
+          "points": 15,
+          "description": "Diseña estructuras de control correctamente anidadas, resolviendo problemas de forma óptima."
+        },
+        "Bueno": {
+          "points": 10,
+          "description": "Diseña estructuras de control correctamente anidadas en la mayoría de los casos."
+        },
+        "Básico": {
+          "points": 5,
+          "description": "Diseña estructuras de control con dificultades en anidamiento o lógica condicional."
+        },
+        "Insuficiente": {
+          "points": 1,
+          "description": "No logra el diseño correcto de estructuras de control o presenta errores graves de lógica."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "name": "Manejo de strings",
+      "description": "Uso de indexación y funciones básicas de strings.",
+      "levels": {
+        "Destacado": {
+          "points": 15,
+          "description": "Manipula strings eficientemente usando indexación y funciones."
+        },
+        "Bueno": {
+          "points": 10,
+          "description": "Utiliza correctamente funciones básicas de strings y acceso por índice."
+        },
+        "Básico": {
+          "points": 5,
+          "description": "Aplica funciones simples de strings e indexación con errores."
+        },
+        "Insuficiente": {
+          "points": 1,
+          "description": "No logra el manejo adecuado de strings."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "name": "Resolución de problemas computacionales",
+      "description": "Capacidad para resolver problemas de forma estructurada y eficiente.",
+      "levels": {
+        "Destacado": {
+          "points": 25,
+          "description": "Resuelve problemas de forma eficiente, estructurada y optimizada."
+        },
+        "Bueno": {
+          "points": 15,
+          "description": "Resuelve problemas correctamente, aunque con oportunidades de optimización."
+        },
+        "Básico": {
+          "points": 5,
+          "description": "Resuelve problemas simples, con dificultades en problemas más complejos."
+        },
+        "Insuficiente": {
+          "points": 1,
+          "description": "No logra resolver problemas o presenta soluciones incorrectas."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "name": "Modelado de datos",
+      "description": "Uso adecuado de strings y listas.",
+      "levels": {
+        "Destacado": {
+          "points": 15,
+          "description": "Representa información de forma estructurada usando correctamente strings y listas."
+        },
+        "Bueno": {
+          "points": 10,
+          "description": "Representa información correctamente en la mayoría de los casos."
+        },
+        "Básico": {
+          "points": 5,
+          "description": "Representa información con limitaciones en elección o uso."
+        },
+        "Insuficiente": {
+          "points": 1,
+          "description": "No logra representar adecuadamente la información."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "name": "Uso de estructuras iterativas FOR",
+      "description": "Uso de FOR en recorridos sobre listas.",
+      "levels": {
+        "Destacado": {
+          "points": 15,
+          "description": "Implementa correctamente FOR en recorridos sobre listas."
+        },
+        "Bueno": {
+          "points": 10,
+          "description": "Implementa FOR correctamente en la mayoría de los casos."
+        },
+        "Básico": {
+          "points": 5,
+          "description": "Implementa FOR con dificultades en algunos casos."
+        },
+        "Insuficiente": {
+          "points": 1,
+          "description": "No implementa FOR correctamente o presenta errores en iteración."
+        }
+      }
+    }
+  ]
+}
