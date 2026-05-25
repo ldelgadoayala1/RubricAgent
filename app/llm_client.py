@@ -1,37 +1,91 @@
 import json
-import os
-
-from openai import OpenAI
+import requests
 
 
-client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY_TEST")
-)
+OLLAMA_URL = "http://200.27.101.243:11434/api/chat"
+
+OLLAMA_MODEL = "llama3.1:8b"
 
 
-def evaluate_with_llm(prompt: str) -> dict:
+def evaluate_with_llm(
+    prompt: str,
+    student_name: str
+) -> dict:
 
-    response = client.chat.completions.create(
-        model="gpt-4.1-mini",
-        messages=[
-            {
-                "role": "system",
-                "content": "Eres un evaluador académico estricto."
-            },
-            {
-                "role": "user",
-                "content": prompt
+    response = requests.post(
+        OLLAMA_URL,
+        json={
+            "model": OLLAMA_MODEL,
+
+            "messages": [
+                {
+                    "role": "system",
+                    "content": """
+Eres un evaluador automático de código.
+
+Tu única tarea es responder JSON válido.
+
+NO expliques.
+NO converses.
+NO des ejemplos.
+NO escribas markdown.
+
+La respuesta DEBE ser JSON válido.
+"""
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+
+            "stream": False,
+
+            "format": "json",
+
+            "options": {
+                "temperature": 0
             }
-        ],
-        temperature=0
+        }
     )
 
-    content = response.choices[0].message.content
+    if response.status_code != 200:
 
-    cleaned_content = content.strip()
+        raise Exception(
+            f"""
+Error Ollama.
 
-    if cleaned_content.startswith("```json"):
-        cleaned_content = cleaned_content.replace("```json", "")
-        cleaned_content = cleaned_content.replace("```", "")
+Status:
+{response.status_code}
 
-    return json.loads(cleaned_content)
+Respuesta:
+{response.text}
+"""
+        )
+
+    raw_response = response.json()
+
+    content = raw_response["message"]["content"]
+
+    print("\n========== RAW RESPONSE ==========")
+    print(content)
+    print("==================================\n")
+
+    try:
+
+        parsed_json = json.loads(content)
+
+        return parsed_json
+
+    except Exception as e:
+
+        raise Exception(
+            f"""
+            Error parseando JSON.
+
+            Error:
+            {str(e)}
+
+            Contenido:
+            {content}
+            """)

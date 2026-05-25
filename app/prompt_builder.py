@@ -7,54 +7,42 @@ def build_evaluation_prompt(
     code: str
 ) -> str:
 
+    language = rubric.get(
+        "language",
+        "text"
+    )
+
     rubric_json = json.dumps(
-        rubric,
-        indent=2,
-        ensure_ascii=False
+        rubric["criteria"],
+        ensure_ascii=False,
+        indent=2
     )
 
     prompt = f"""
-    Eres un profesor universitario experto en programación Python.
-    Debes evaluar el código del alumno utilizando EXCLUSIVAMENTE la siguiente rúbrica.
+        Analiza el siguiente código {language}
+        y evalúalo utilizando esta rúbrica.
 
-    RÚBRICA:
-    {rubric_json}
+        Devuelve SOLO JSON válido.
 
-    NOMBRE DEL ALUMNO:
-    {student_name}
+        La respuesta debe comenzar con {{
+        y terminar con }}
 
-    CÓDIGO DEL ALUMNO:
-    ```python
-    {code}
+        Alumno:
+        {student_name}
 
-    INSTRUCCIONES IMPORTANTES:
+        Rúbrica:
+        {rubric_json}
 
-    Evalúa TODOS los criterios.
-    Para cada criterio selecciona SOLO uno de estos niveles:
-    Destacado
-    Bueno
-    Básico
-    Insuficiente
-    Justifica brevemente cada evaluación.
-    Calcula correctamente el puntaje total.
-    NO inventes criterios adicionales.
-    RESPONDE SOLO JSON VÁLIDO.
+        Código:
+        ```{language}
+        {code}
+        Formato esperado:
 
-    FORMATO DE RESPUESTA:
-
-    {{
-    "student_name": "{student_name}",
-    "criteria_results": [
-    {{
-    "criterion_id": 1,
-    "criterion_name": "",
-    "level": "",
-    "score": 0,
-    "feedback": ""
-    }}
-    ],
-    "total_score": 0,
-    "general_feedback": ""
-    }}
-    """
+        {{
+        "student_name": "{student_name}",
+        "criteria_results": [],
+        "total_score": 0,
+        "general_feedback": ""
+        }}
+        """
     return prompt

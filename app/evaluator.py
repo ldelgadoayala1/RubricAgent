@@ -1,10 +1,11 @@
 from pathlib import Path
 
+
 from app.notebook_parser import extract_code_from_notebook
 from app.prompt_builder import build_evaluation_prompt
 from app.llm_client import evaluate_with_llm
 from app.rubric import load_rubric
-
+from app.response_parser import normalize_response
 
 def read_code_file(file_path: str) -> str:
 
@@ -41,6 +42,14 @@ def evaluate_student(
         code=code
     )
 
-    result = evaluate_with_llm(prompt)
+    result = evaluate_with_llm(
+        prompt=prompt,
+        student_name=student_name
+    )
 
-    return result
+    normalized_result = normalize_response(
+        result
+    )
+
+    return normalized_result
+    

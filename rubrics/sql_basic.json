@@ -1,0 +1,10 @@
+{
+  "rubric_name": "SQL Básico",
+  "language": "sql",
+  "allowed_extensions": [
+    ".sql"
+  ],
+  "description": "Evaluación de consultas SQL.",
+  "total_points": 100,
+  "criteria": ["Evalua esta consulta segun las buenas practicas tradicionales de SQL, uso de mayusculas para palabras recervadas, claridad de uso de variables, etc"]
+}
