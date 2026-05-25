@@ -31,9 +31,11 @@ def build_evaluation_prompt(
     - Cada criterio DEBE incluir:
     - criterion_id
     - criterion_name
-    - level
-    - score
-    - feedback
+    - level: Se extrae directamente de la rúbrica por ejemplo (Destacado, Bueno, Básico, Insuficiente)
+    - score: Se asigna segun el level, en el campo points, por ejemplo (Destacado: 15, Bueno: 10, Básico: 5, Insuficiente: 1)
+    - feedback: Utiliza los mismos feedback del campo description, segun el level. Por ejemplo (Destacado: "El código cumple con todos los requisitos y demuestra un excelente uso de las estructuras de control.", Bueno: "El código cumple con la mayoría de los requisitos y muestra un buen uso de las estructuras de control.", Básico: "El código cumple con algunos requisitos pero tiene áreas de mejora en el uso de las estructuras de control.", Insuficiente: "El código no cumple con los requisitos y muestra un uso deficiente de las estructuras de control.")
+    - general_feedback: resumen general del desempeño
+
 
     El campo "feedback" es obligatorio
     y debe contener una observación breve
@@ -62,7 +64,6 @@ def build_evaluation_prompt(
     "feedback": "Utiliza operadores correctamente en la mayoría de los casos."
     }}
     ],
-    "total_score": 0,
     "general_feedback": "Resumen general del desempeño."
     }}
     """

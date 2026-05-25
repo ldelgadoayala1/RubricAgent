@@ -7,6 +7,7 @@ def normalize_response(response: dict) -> dict:
         []
     )
 
+    total_score=0
     for index, item in enumerate(criteria_results):
 
         criterion_name = (
@@ -53,6 +54,7 @@ def normalize_response(response: dict) -> dict:
             "feedback":
                 feedback
         }
+        total_score += normalized_item["score"]
 
         normalized_results.append(
             normalized_item
@@ -104,11 +106,7 @@ def normalize_response(response: dict) -> dict:
         "criteria_results":
             normalized_results,
 
-        "total_score":
-            response.get(
-                "total_score",
-                0
-            ),
+        "total_score":str(total_score),
 
         "general_feedback":
             final_general_feedback
