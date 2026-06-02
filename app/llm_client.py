@@ -4,7 +4,7 @@ import requests
 
 OLLAMA_URL = "http://200.27.101.243:11434/api/chat"
 
-OLLAMA_MODEL = "llama3.1:8b"
+OLLAMA_MODEL = "gemma4:e2b"
 
 
 def evaluate_with_llm(

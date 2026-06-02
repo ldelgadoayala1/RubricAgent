@@ -33,6 +33,90 @@ def root():
     }
 
 
+from fastapi import FastAPI, HTTPException
+import requests
+import os
+
+app = FastAPI()
+
+OLLAMA_URL = os.getenv(
+    "OLLAMA_URL",
+    "http://200.27.101.243:11434"
+)
+
+OLLAMA_MODEL = os.getenv(
+    "OLLAMA_MODEL",
+    "llama3.1:8b"
+)
+
+
+@app.get("/health")
+def health():
+
+    try:
+
+        response = requests.get(
+            f"{OLLAMA_URL}/api/tags",
+            timeout=10
+        )
+
+        if response.status_code != 200:
+
+            return {
+                "status": "error",
+                "api": "online",
+                "ollama": "offline",
+                "detail": response.text
+            }
+
+        data = response.json()
+
+        models = data.get(
+            "models",
+            []
+        )
+
+        model_names = [
+            model.get("name")
+            for model in models
+        ]
+
+        configured_model_exists = (
+            OLLAMA_MODEL in model_names
+        )
+
+        return {
+            "status": (
+                "ok"
+                if configured_model_exists
+                else "warning"
+            ),
+
+            "api": "online",
+
+            "ollama": "online",
+
+            "configured_model": OLLAMA_MODEL,
+
+            "configured_model_exists":
+                configured_model_exists,
+
+            "models_available":
+                model_names,
+
+            "models_count":
+                len(model_names)
+        }
+
+    except Exception as e:
+
+        return {
+            "status": "error",
+            "api": "online",
+            "ollama": "offline",
+            "detail": str(e)
+        }
+
 @app.get("/rubrics")
 def list_rubrics():
 
@@ -74,3 +158,4 @@ async def evaluate_code(
             status_code=500,
             detail=str(e)
         )
+    
