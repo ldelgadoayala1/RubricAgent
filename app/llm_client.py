@@ -1,26 +1,51 @@
 import json
 import requests
+from pathlib import Path
 
 
-OLLAMA_URL = "http://200.27.101.243:11434/api/chat"
+# =====================================================
+# Cargar configuración
+# =====================================================
 
-OLLAMA_MODEL = "gemma4:e2b"
+PROJECT_ROOT = Path(__file__).resolve().parent
 
+CONFIG_PATH = PROJECT_ROOT / "gestion-uso-ia-config.json"
+
+with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+    CONFIG = json.load(f)
+
+BASE_URL = CONFIG["base_url"].rstrip("/")
+API_KEY = CONFIG["api_key"]
+
+CHAT_URL = BASE_URL + CONFIG["endpoints"]["chat_completions"]
+
+# Modelo por defecto
+MODEL = "gemma4:e2b"
+
+
+# =====================================================
+# Cliente LLM
+# =====================================================
 
 def evaluate_with_llm(
     prompt: str,
     student_name: str
 ) -> dict:
 
-    response = requests.post(
-        OLLAMA_URL,
-        json={
-            "model": OLLAMA_MODEL,
+    headers = {
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json"
+    }
 
-            "messages": [
-                {
-                    "role": "system",
-                    "content": """
+    payload = {
+
+        "model": MODEL,
+
+        "messages": [
+
+            {
+                "role": "system",
+                "content": """
 Eres un evaluador automático de código.
 
 Tu única tarea es responder JSON válido.
@@ -32,28 +57,31 @@ NO escribas markdown.
 
 La respuesta DEBE ser JSON válido.
 """
-                },
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ],
+            },
 
-            "stream": False,
-
-            "format": "json",
-
-            "options": {
-                "temperature": 0
+            {
+                "role": "user",
+                "content": prompt
             }
-        }
+
+        ],
+
+        "temperature": 0
+
+    }
+
+    response = requests.post(
+        CHAT_URL,
+        headers=headers,
+        json=payload,
+        timeout=300
     )
 
     if response.status_code != 200:
 
         raise Exception(
             f"""
-Error Ollama.
+Error llamando al LLM.
 
 Status:
 {response.status_code}
@@ -65,27 +93,25 @@ Respuesta:
 
     raw_response = response.json()
 
-    content = raw_response["message"]["content"]
+    content = raw_response["choices"][0]["message"]["content"]
 
     print("\n========== RAW RESPONSE ==========")
     print(content)
     print("==================================\n")
 
     try:
-
-        parsed_json = json.loads(content)
-
-        return parsed_json
+        return json.loads(content)
 
     except Exception as e:
 
         raise Exception(
             f"""
-            Error parseando JSON.
+Error parseando JSON.
 
-            Error:
-            {str(e)}
+Error:
+{e}
 
-            Contenido:
-            {content}
-            """)
+Contenido:
+{content}
+"""
+        )
